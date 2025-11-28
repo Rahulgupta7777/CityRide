@@ -34,4 +34,4 @@ app.get('/journey', async (req, res) => {
     res.json(await prisma.$queryRaw`SELECT r.route_short_name as route_number, t.trip_headsign, st1.arrival_time as start_time, st2.arrival_time as end_time, (st2.stop_sequence - st1.stop_sequence) as stops_in_between FROM "Trip" t JOIN "Route" r ON t.route_id = r.route_id JOIN "StopTime" st1 ON t.trip_id = st1.trip_id JOIN "StopTime" st2 ON t.trip_id = st2.trip_id JOIN "Stop" s1 ON st1.stop_id = s1.stop_id JOIN "Stop" s2 ON st2.stop_id = s2.stop_id WHERE s1.stop_name ILIKE '%' || ${from} || '%' AND s2.stop_name ILIKE '%' || ${to} || '%' AND st1.stop_sequence < st2.stop_sequence ORDER BY st1.arrival_time ASC LIMIT 20`);
 });
 
-module.exports = app;
+app.listen(3000, () => console.log(`Server running on http://localhost:3000`));
