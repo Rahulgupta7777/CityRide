@@ -1,10 +1,10 @@
-const express = require('express'), 
-cors = require('cors'), 
-{ PrismaClient } = require('@prisma/client');
+const express = require('express'),
+    cors = require('cors'),
+    { PrismaClient } = require('@prisma/client');
 const app = express()
-prisma = new PrismaClient();
+const prisma = new PrismaClient();
 app.use(cors());
-
+app.use(express.json());
 
 // .env
 
@@ -12,16 +12,24 @@ app.use(cors());
 // DIRECT_URL="postgresql://postgres.xogilzudxbrzukbhlbvv:Yash*123@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres"
 
 app.get('/routes/search', async (req, res) => {
-    const { q } = req.query;
-    const [routes, stops] = await Promise.all([
-        prisma.route.findMany({ where: { OR: [{ route_short_name: { contains: q, mode: 'insensitive' } }, { route_long_name: { contains: q, mode: 'insensitive' } }] }, include: { trips: { distinct: ['direction_id'], select: { direction_id: true, trip_headsign: true, trip_id: true } } } }),
-        prisma.$queryRaw`SELECT DISTINCT r.route_id, r.route_short_name, r.route_long_name, r.area, t.direction_id, t.trip_headsign, t.trip_id FROM "Route" r JOIN "Trip" t ON r.route_id = t.route_id JOIN "StopTime" st ON t.trip_id = st.trip_id JOIN "Stop" s ON st.stop_id = s.stop_id WHERE s.stop_name ILIKE '%' || ${q} || '%' LIMIT 50`
-    ]);
-    const results = [], seen = new Set();
-    const add = (r, d, h, id, a) => { const k = `${r.route_id}-${d}`; if (!seen.has(k)) { seen.add(k); results.push({ route_number: r.route_short_name, route_id: r.route_id, destination: h || r.route_long_name, area: a || r.area || "Central", example_trip_id: id }); } };
-    routes.forEach(r => r.trips.forEach(t => add(r, t.direction_id, t.trip_headsign, t.trip_id, r.area)));
-    stops.forEach(r => add(r, r.direction_id, r.trip_headsign, r.trip_id, r.area));
-    res.json(results);
+    console.log(`GET /routes/search q=${req.query.q}`);
+    try {
+        const { q } = req.query;
+        if (!q) return res.json([]); // Handle empty query
+
+        const [routes, stops] = await Promise.all([
+            prisma.route.findMany({ where: { OR: [{ route_short_name: { contains: q, mode: 'insensitive' } }, { route_long_name: { contains: q, mode: 'insensitive' } }] }, include: { trips: { distinct: ['direction_id'], select: { direction_id: true, trip_headsign: true, trip_id: true } } } }),
+            prisma.$queryRaw`SELECT DISTINCT r.route_id, r.route_short_name, r.route_long_name, r.area, t.direction_id, t.trip_headsign, t.trip_id FROM "Route" r JOIN "Trip" t ON r.route_id = t.route_id JOIN "StopTime" st ON t.trip_id = st.trip_id JOIN "Stop" s ON st.stop_id = s.stop_id WHERE s.stop_name ILIKE ${'%' + q + '%'} LIMIT 50`
+        ]);
+        const results = [], seen = new Set();
+        const add = (r, d, h, id, a) => { const k = `${r.route_id}-${d}`; if (!seen.has(k)) { seen.add(k); results.push({ route_number: r.route_short_name, route_id: r.route_id, destination: h || r.route_long_name, area: a || r.area || "Central", example_trip_id: id }); } };
+        routes.forEach(r => r.trips.forEach(t => add(r, t.direction_id, t.trip_headsign, t.trip_id, r.area)));
+        stops.forEach(r => add(r, r.direction_id, r.trip_headsign, r.trip_id, r.area));
+        res.json(results);
+    } catch (error) {
+        console.error('Search Error:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 app.get('/route/details', async (req, res) => {

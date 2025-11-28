@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './screens/Home';
-import Search from './screens/Search';
 import RouteDetails from './screens/RouteDetails';
 import JourneyPlanner from './screens/JourneyPlanner';
 import Favorites from './screens/Favorites';
@@ -15,10 +14,10 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function SearchStack() {
+function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="SearchMain" component={Search} />
+      <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="RouteDetails" component={RouteDetails} />
       <Stack.Screen name="JourneyPlanner" component={JourneyPlanner} />
     </Stack.Navigator>
@@ -36,7 +35,7 @@ export default function App() {
       >
         <Tab.Screen
           name="Home"
-          component={Home}
+          component={HomeStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons name="home" size={size} color={color} />
@@ -45,11 +44,11 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Search"
-          component={SearchStack}
+          name="Journey"
+          component={JourneyPlanner}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="search" size={size} color={color} />
+              <MaterialIcons name="directions" size={size} color={color} />
             ),
           }}
         />
