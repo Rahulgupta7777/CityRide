@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,9 +33,9 @@ export default function Favorites({ navigation }) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      key={item.route_number}   // 🔥 fixes missing key warning
+      key={item.route_number}
       style={styles.card}
-      activeOpacity={0.8}
+      activeOpacity={0.85}
       onPress={() => navigation.navigate("RouteDetails", { route_number: item.route_number })}
     >
       <View style={styles.cardLeft}>
@@ -51,33 +58,45 @@ export default function Favorites({ navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Favourite Routes</Text>
+    <ImageBackground
+      source={require("../assets/fav.png")}
+      style={styles.bg}
+      blurRadius={4}
+      resizeMode="cover"
+    >
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Favourite Routes </Text>
 
-      {favorites.length === 0 ? (
-        <View style={styles.emptyBlock}>
-          <MaterialIcons name="favorite-border" size={52} color="#90A17D" />
-          <Text style={styles.emptyText}>No favourites added yet</Text>
-          <Text style={styles.emptySubText}>Save routes to access them faster anytime</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={favorites}
-          keyExtractor={(item) => item.route_number}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 24 }}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-    </SafeAreaView>
+        {favorites.length === 0 ? (
+          <View style={styles.emptyBlock}>
+            <MaterialIcons name="favorite-border" size={52} color="#90A17D" />
+            <Text style={styles.emptyText}>No favourites added yet</Text>
+            <Text style={styles.emptySubText}>Save routes to access them faster anytime</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={favorites}
+            keyExtractor={(item) => item.route_number}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingBottom: 24 }}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  bg: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
     padding: 18,
+    backgroundColor: "transparent",
   },
 
   title: {
@@ -88,7 +107,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  /* Empty State */
   emptyBlock: {
     marginTop: 80,
     alignItems: "center",
@@ -102,12 +120,11 @@ const styles = StyleSheet.create({
   emptySubText: {
     fontSize: 14,
     marginTop: 4,
-    color: "#7A7A7A",
+    color: "#6D6D6D",
   },
 
-  /* Card */
   card: {
-    backgroundColor: "#F8FAF5",
+    backgroundColor: "rgba(255,255,255,0.85)",
     borderRadius: 18,
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -116,10 +133,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
 
-    // smooth shadow modern
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.13,
     shadowRadius: 3,
     elevation: 3,
   },
@@ -147,7 +163,7 @@ const styles = StyleSheet.create({
 
   headsign: {
     fontSize: 13,
-    color: "#656565",
+    color: "#555",
     marginTop: 2,
     maxWidth: 200,
   },
