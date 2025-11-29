@@ -5,7 +5,6 @@ const app = express()
 app.use(cors());
 app.use(express.json());
 
-// Override DATABASE_URL with working connection string (Port 6543 for Supabase Transaction Pooler)
 const DATABASE_URL = "postgresql://postgres.xogilzudxbrzukbhlbvv:Yash*123@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1";
 
 const prisma = new PrismaClient({

@@ -5,9 +5,9 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
-  SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from "../components/SearchBar";
 import RouteCard from "../components/RouteCard";
 import { searchRoutes } from "../services/api";
