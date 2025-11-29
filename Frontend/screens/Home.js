@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, TouchableOpacity } from 'react-native';
-import SearchBar from '../components/SearchBar';
-import RouteCard from '../components/RouteCard';
-import { searchRoutes } from '../services/api';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
+import SearchBar from "../components/SearchBar";
+import RouteCard from "../components/RouteCard";
+import { searchRoutes } from "../services/api";
 
 export default function Home({ navigation }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,7 +37,7 @@ export default function Home({ navigation }) {
         const results = await searchRoutes(query);
         setRoutes(results);
       } catch (err) {
-        setError('Failed to fetch routes. Please try again.');
+        setError("Failed to fetch routes. Please try again.");
         console.error(err);
       } finally {
         setLoading(false);
@@ -40,7 +48,12 @@ export default function Home({ navigation }) {
   const renderItem = ({ item }) => (
     <RouteCard
       route={item}
-      onPress={() => navigation.navigate('RouteDetails', { tripId: item.example_trip_id, route: item })}
+      onPress={() =>
+        navigation.navigate("RouteDetails", {
+          tripId: item.example_trip_id,
+          route: item,
+        })
+      }
     />
   );
 
@@ -58,7 +71,10 @@ export default function Home({ navigation }) {
       />
 
       <View style={styles.chipsRow}>
-        <TouchableOpacity style={styles.chipPrimary} onPress={() => navigation.navigate('Journey')}>
+        <TouchableOpacity
+          style={styles.chipPrimary}
+          onPress={() => navigation.navigate("JourneyPlanner")}
+        >
           <Text style={styles.chipPrimaryText}>Plan a journey</Text>
         </TouchableOpacity>
       </View>
@@ -95,7 +111,7 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     paddingHorizontal: 20,
@@ -104,63 +120,63 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   chipsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     marginBottom: 8,
   },
   chip: {
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
     borderWidth: 1,
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginRight: 8,
-    backgroundColor: 'white',
-    shadowColor: '#000',
+    backgroundColor: "white",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
   },
   chipText: {
-    color: '#333',
+    color: "#333",
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   chipPrimary: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
   chipPrimaryText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   listContent: {
     paddingBottom: 20,
   },
   center: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     fontSize: 16,
   },
   emptyText: {
-    color: '#666',
+    color: "#666",
     fontSize: 16,
   },
 });

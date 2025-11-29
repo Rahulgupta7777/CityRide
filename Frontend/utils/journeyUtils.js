@@ -9,3 +9,11 @@ export function calculateJourney(route, startIdx, endIdx) {
   }
   return { numStops, totalTime };
 }
+
+export function calculateStopsBetween(stops, fromName, toName) {
+  const fromIdx = stops.findIndex((s) => s.stop_name === fromName);
+  const toIdx = stops.findIndex((s) => s.stop_name === toName);
+
+  if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return 0;
+  return Math.abs(toIdx - fromIdx);
+}

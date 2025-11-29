@@ -1,5 +1,4 @@
 export function calculateNextBusTime(firstBus, lastBus, freqMins) {
-
   const pad = (n) => (n < 10 ? "0" + n : String(n));
   const now = new Date();
   const [fh, fm] = firstBus.split(":").map(Number);
@@ -39,8 +38,8 @@ export function calculateNextBusTime(firstBus, lastBus, freqMins) {
 }
 
 export function parseHHMMSSToMinutes(hhmmss) {
-  if (!hhmmss || typeof hhmmss !== 'string') return NaN;
-  const [h = 0, m = 0, s = 0] = hhmmss.split(':').map(Number);
+  if (!hhmmss || typeof hhmmss !== "string") return NaN;
+  const [h = 0, m = 0, s = 0] = hhmmss.split(":").map(Number);
   return h * 60 + m + Math.floor(s / 60);
 }
 

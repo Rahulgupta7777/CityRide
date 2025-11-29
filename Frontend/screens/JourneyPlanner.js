@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import {View,Text,StyleSheet,TextInput,TouchableOpacity,FlatList,ActivityIndicator,SafeAreaView,} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+  SafeAreaView,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getJourney } from "../services/api";
 import { diffMinutesHHMMSS } from "../utils/timeUtils";
@@ -48,6 +57,9 @@ export default function JourneyPlanner() {
             </View>
             <Text style={styles.times}>
               {item.start_time} → {item.end_time} · {duration} mins
+            </Text>
+            <Text style={styles.times}>
+              {item.stops_in_between} stops in between
             </Text>
           </View>
         </View>
@@ -131,15 +143,10 @@ export default function JourneyPlanner() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" 
-
-  },
-  header: { paddingHorizontal: 20, paddingTop: 20, 
-    paddingBottom: 10 },
-  title: { fontSize: 28, fontWeight: "bold",
-     color: "#333" },
-  subtitle: { fontSize: 16, color: "#666",
-     marginTop: 4 },
+  container: { flex: 1, backgroundColor: "#fff" },
+  header: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 10 },
+  title: { fontSize: 28, fontWeight: "bold", color: "#333" },
+  subtitle: { fontSize: 16, color: "#666", marginTop: 4 },
   inputRow: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 8 },
   inputCard: {
     flexDirection: "row",
