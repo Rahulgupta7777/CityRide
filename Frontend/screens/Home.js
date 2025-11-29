@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import RouteCard from '../components/RouteCard';
 import { searchRoutes } from '../services/api';
@@ -57,6 +57,12 @@ export default function Home({ navigation }) {
         onSubmit={() => handleSearch(searchQuery)}
       />
 
+      <View style={styles.chipsRow}>
+        <TouchableOpacity style={styles.chipPrimary} onPress={() => navigation.navigate('Journey')}>
+          <Text style={styles.chipPrimaryText}>Plan a journey</Text>
+        </TouchableOpacity>
+      </View>
+
       {loading && (
         <View style={styles.center}>
           <ActivityIndicator size="large" color="#007AFF" />
@@ -105,6 +111,42 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginTop: 4,
+  },
+  chipsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    marginBottom: 8,
+  },
+  chip: {
+    borderColor: '#e0e0e0',
+    borderWidth: 1,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginRight: 8,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  chipText: {
+    color: '#333',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  chipPrimary: {
+    backgroundColor: '#007AFF',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  chipPrimaryText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
   listContent: {
     paddingBottom: 20,
