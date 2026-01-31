@@ -5,7 +5,8 @@ const app = express()
 app.use(cors());
 app.use(express.json());
 
-const DATABASE_URL = "postgresql://postgres:Bok26103dsdsd@db.bxqhxfoscozpfbemyyrg.supabase.co:5432/postgres?pgbouncer=true&connection_limit=1";
+const DATABASE_URL =
+  "postgresql://postgres.bxqhxfoscozpfbemyyrg:Bok26103dsdsd@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1";
 
 const prisma = new PrismaClient({
     datasources: {
@@ -14,9 +15,6 @@ const prisma = new PrismaClient({
         },
     },
 });
-
-// DATABASE_URL="postgresql://postgres.xogilzudxbrzukbhlbvv:Yash*123@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres"
-// DIRECT_URL="postgresql://postgres.xogilzudxbrzukbhlbvv:Yash*123@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres"
 
 app.get('/routes/search', async (req, res) => {
     console.log(`GET /routes/search q=${req.query.q}`);

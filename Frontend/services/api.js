@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://192.168.128.241:3000"; // Update with your backend server's IP and port
 
 
 
