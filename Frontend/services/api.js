@@ -1,4 +1,4 @@
-const BASE_URL = "https://city-ride-ashen.vercel.app/";
+const BASE_URL = "http://localhost:3000";
 
 
 
